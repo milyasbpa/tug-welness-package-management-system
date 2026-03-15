@@ -1,0 +1,36 @@
+# lefthook.yml — Root git hooks for the monorepo
+#
+# Covers all three sub-projects:
+#   backend/       → NestJS (TypeScript)  — runs lint-staged from subdirectory
+#   admin-portal/  → Next.js (TypeScript) — runs lint-staged from subdirectory
+#   mobile-app/    → Flutter (Dart)       — runs dart format + flutter analyze
+#
+# Install after cloning:   npm install  (triggers "prepare": "lefthook install")
+# Skip hooks temporarily:  LEFTHOOK=0 git commit -m "..."
+# Run manually:            lefthook run pre-commit
+
+pre-commit:
+  parallel: true
+  commands:
+    backend-lint:
+      glob: "backend/**/*.{ts,js}"
+      run: cd backend && npx lint-staged
+
+    admin-lint:
+      glob: "admin-portal/**/*.{ts,tsx,js,jsx,json,css,md}"
+      run: cd admin-portal && npx lint-staged
+
+    mobile-format:
+      glob: "mobile-app/lib/**/*.dart"
+      run: cd mobile-app && dart format --set-exit-if-changed lib/ test/
+      fail_text: "Run 'dart format lib/ test/' inside mobile-app/ to fix formatting"
+
+    mobile-analyze:
+      glob: "mobile-app/**/*.dart"
+      run: cd mobile-app && flutter analyze --fatal-infos
+      fail_text: "Fix all Flutter analysis issues before committing"
+
+commit-msg:
+  commands:
+    commitlint:
+      run: npx --no -- commitlint --edit {1}

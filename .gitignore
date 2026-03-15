@@ -1,0 +1,36 @@
+# ─── macOS ──────────────────────────────────────────────
+.DS_Store
+
+# ─── Node.js (backend / admin-portal) ───────────────────
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# ─── NestJS (backend/) ──────────────────────────────────
+backend/dist/
+backend/logs/
+
+# ─── Next.js (admin-portal/) ────────────────────────────
+admin-portal/.next/
+admin-portal/out/
+admin-portal/coverage/
+admin-portal/tsconfig.tsbuildinfo
+
+# ─── Flutter (mobile-app/) ──────────────────────────────
+mobile-app/build/
+mobile-app/.dart_tool/
+mobile-app/.flutter-plugins-dependencies
+mobile-app/tsconfig.tsbuildinfo
+
+# ─── Environment files ──────────────────────────────────
+# Keep .env.example — ignore actual secrets
+**/.env
+**/.env.development
+**/.env.production
+**/.env.staging
+**/.env.test
+!**/.env.example
+
+# ─── Misc ───────────────────────────────────────────────
+*.log

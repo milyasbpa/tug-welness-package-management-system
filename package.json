@@ -1,0 +1,15 @@
+{
+  "name": "tug-wellness-package-management-system",
+  "version": "1.0.0",
+  "description": "Wellness Package Management System — monorepo (backend / admin-portal / mobile-app)",
+  "private": true,
+  "scripts": {
+    "prepare": "lefthook install"
+  },
+  "devDependencies": {
+    "@commitlint/cli": "^20.4.4",
+    "@commitlint/config-conventional": "^20.4.4",
+    "@commitlint/types": "^20.4.4",
+    "lefthook": "^1.11.0"
+  }
+}
