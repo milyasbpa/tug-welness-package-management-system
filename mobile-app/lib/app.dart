@@ -8,13 +8,6 @@ import 'package:flutter_starter_kit/core/router/app_router.dart';
 import 'package:flutter_starter_kit/core/theme/app_theme.dart';
 import 'package:flutter_starter_kit/features/auth/presentation/blocs/auth_bloc.dart';
 
-/// Root widget of the application.
-///
-/// Responsibilities of this file:
-/// - Theme configuration (light & dark) via [AppTheme]
-/// - Router/navigation setup via [appRouter]
-/// - Localization via slang's [TranslationProvider] + [LocaleCubit]
-/// - [AuthBloc] provided via [BlocProvider.value] (singleton managed by GetIt)
 class App extends StatelessWidget {
   const App({super.key});
 
@@ -25,8 +18,6 @@ class App extends StatelessWidget {
         BlocProvider<AuthBloc>.value(value: getIt<AuthBloc>()),
         BlocProvider<LocaleCubit>(create: (_) => getIt<LocaleCubit>()),
       ],
-      // TranslationProvider listens to LocaleSettings.setLocale() calls and
-      // rebuilds the subtree automatically — no BlocBuilder needed for locale.
       child: TranslationProvider(
         child: Builder(
           builder: (ctx) => MaterialApp.router(
@@ -35,7 +26,6 @@ class App extends StatelessWidget {
             routerConfig: appRouter,
             theme: AppTheme.light,
             darkTheme: AppTheme.dark,
-            // ── Localization ──────────────────────────────────────────
             locale: TranslationProvider.of(ctx).flutterLocale,
             supportedLocales: AppLocaleUtils.supportedLocales,
             localizationsDelegates: GlobalMaterialLocalizations.delegates,
