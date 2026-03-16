@@ -1,5 +1,4 @@
 import type { Meta, StoryObj } from '@storybook/nextjs-vite';
-import { vi } from 'vitest';
 
 import type { PackageResponseDto } from '@/core/api/generated/nestjsStarter.schemas';
 
@@ -54,9 +53,13 @@ const meta: Meta<typeof PackagesMobileCards> = {
     packages: mockPackages,
     isLoading: false,
     skeletonRows: 3,
-    onEdit: vi.fn(),
-    onDelete: vi.fn(),
+    onEdit: () => {},
+    onDelete: () => {},
     labels: defaultLabels,
+  },
+  argTypes: {
+    onEdit: { action: 'edit clicked' },
+    onDelete: { action: 'delete clicked' },
   },
 };
 
