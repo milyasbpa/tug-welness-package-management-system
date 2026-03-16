@@ -1,5 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/nextjs-vite';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { Loader2 } from 'lucide-react';
+import React from 'react';
 import { userEvent, within } from 'storybook/test';
 
 import { Button } from '@/core/components/button';
@@ -13,12 +15,17 @@ const meta: Meta<typeof FormLogin> = {
   tags: ['autodocs'],
   parameters: {
     layout: 'centered',
+    nextjs: {
+      appDirectory: true,
+    },
   },
   decorators: [
     (Story) => (
-      <div className="w-sm p-8">
-        <Story />
-      </div>
+      <QueryClientProvider client={new QueryClient()}>
+        <div className="w-sm p-8">
+          <Story />
+        </div>
+      </QueryClientProvider>
     ),
   ],
 };
