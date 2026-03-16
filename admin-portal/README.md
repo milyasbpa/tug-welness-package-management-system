@@ -259,6 +259,8 @@ Stories cover:
 
 Story configuration lives in `core/storybook/`. All stories in `core/components/**` and `features/**` are automatically picked up.
 
+![Storybook](docs/storybook.png)
+
 ---
 
 ## Assumptions
