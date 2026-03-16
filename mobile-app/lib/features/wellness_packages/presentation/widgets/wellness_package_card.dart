@@ -12,18 +12,22 @@ class WellnessPackageCard extends StatelessWidget {
 
   final WellnessPackage package;
 
-  /// Formats [price] as Indonesian Rupiah, e.g. `Rp 150.000`.
+  /// Formats [price] as US Dollar, e.g. `$1,500.00`.
   static String _formatPrice(double price) {
-    final formatted = price.toStringAsFixed(0);
+    final parts = price.toStringAsFixed(2).split('.');
+    final intPart = parts[0];
+    final decPart = parts[1];
+
     final buffer = StringBuffer();
-    final reversed = formatted.split('').reversed.toList();
+    final reversed = intPart.split('').reversed.toList();
 
     for (var i = 0; i < reversed.length; i++) {
-      if (i != 0 && i % 3 == 0) buffer.write('.');
+      if (i != 0 && i % 3 == 0) buffer.write(',');
       buffer.write(reversed[i]);
     }
 
-    return 'Rp ${buffer.toString().split('').reversed.join()}';
+    final formatted = buffer.toString().split('').reversed.join();
+    return '\$$formatted.$decPart';
   }
 
   @override
