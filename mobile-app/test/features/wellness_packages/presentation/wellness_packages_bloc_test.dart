@@ -223,7 +223,7 @@ void main() {
     );
 
     blocTest<WellnessPackagesBloc, WellnessPackagesState>(
-      'emits Error when load-more use case call fails',
+      'reverts to Loaded (isLoadingMore: false) when load-more fails',
       build: buildBloc,
       setUp: () {
         var callCount = 0;
@@ -250,7 +250,11 @@ void main() {
           activeParams: const GetPackagesParams(),
           isLoadingMore: true,
         ),
-        const WellnessPackagesError(message: 'Network error occurred.'),
+        WellnessPackagesLoaded(
+          packages: _tPage1.packages,
+          paginatedData: _tPage1,
+          activeParams: const GetPackagesParams(),
+        ),
       ],
     );
   });
