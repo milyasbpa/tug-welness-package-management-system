@@ -10,6 +10,8 @@ import type { PackagesMeta } from './use-admin-packages';
 
 type InfiniteParams = Omit<AdminPackagesControllerFindAllV1Params, 'page'>;
 
+export const PACKAGES_INFINITE_QUERY_KEY = '/api/admin/packages/infinite';
+
 export interface UseAdminPackagesInfiniteResult {
   packages: PackageResponseDto[];
   meta: PackagesMeta | null;
@@ -27,7 +29,7 @@ export function useAdminPackagesInfinite(
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isLoading, isError } =
     useInfiniteQuery({
       enabled: options?.enabled ?? true,
-      queryKey: ['/api/admin/packages/infinite', params],
+      queryKey: [PACKAGES_INFINITE_QUERY_KEY, params],
       queryFn: ({ pageParam, signal }) =>
         adminPackagesControllerFindAllV1({ ...params, page: pageParam as number }, signal),
       initialPageParam: 1,
