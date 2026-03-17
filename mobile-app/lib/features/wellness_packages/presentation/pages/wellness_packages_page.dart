@@ -204,7 +204,10 @@ class _PackagesList extends StatelessWidget {
               child: AppLoading.circular(),
             );
           }
-          return WellnessPackageCard(package: packages[index]);
+          return WellnessPackageCard(
+            key: ValueKey(packages[index].id),
+            package: packages[index],
+          );
         },
       ),
     );
