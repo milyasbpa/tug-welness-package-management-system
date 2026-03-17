@@ -30,6 +30,24 @@ pre-commit:
       run: cd mobile-app && flutter analyze --fatal-infos
       fail_text: "Fix all Flutter analysis issues before committing"
 
+pre-push:
+  parallel: true
+  commands:
+    backend-test:
+      glob: "backend/**/*.{ts,js}"
+      run: cd backend && npm test
+      fail_text: "Backend tests failed. Fix failing tests before pushing."
+
+    admin-test:
+      glob: "admin-portal/**/*.{ts,tsx}"
+      run: cd admin-portal && npm test
+      fail_text: "Admin portal tests failed. Fix failing tests before pushing."
+
+    mobile-test:
+      glob: "mobile-app/**/*.dart"
+      run: cd mobile-app && flutter test
+      fail_text: "Flutter tests failed. Fix failing tests before pushing."
+
 commit-msg:
   commands:
     commitlint:
