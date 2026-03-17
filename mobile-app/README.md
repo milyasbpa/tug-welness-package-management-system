@@ -22,7 +22,7 @@ This is the **Mobile App** (Part 3 of the assessment). It connects to the TUG Ne
 | Pull-to-refresh | ✅ Bonus |
 | Search with debounce (400ms) | ✅ Bonus |
 | Infinite scroll / pagination | ✅ Bonus |
-| Currency formatting (`Rp 150.000`) | ✅ Bonus |
+| Currency formatting (`$1,500.00`) | ✅ Bonus |
 | Shimmer loading skeleton | ✅ Bonus |
 | Mock datasource for `dev` flavor | ✅ Bonus |
 | Unit + widget tests (25 tests) | ✅ Bonus |
