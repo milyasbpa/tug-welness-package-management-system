@@ -48,11 +48,11 @@ void main() {
       expect(find.text('A relaxing full-body massage.'), findsOneWidget);
     });
 
-    testWidgets('displays price formatted as IDR currency', (tester) async {
+    testWidgets('displays price formatted as USD currency', (tester) async {
       await tester.pumpWidget(_wrap(WellnessPackageCard(package: _tPackage)));
 
-      // 150000 → "Rp 150.000"
-      expect(find.text('Rp 150.000'), findsOneWidget);
+      // 150000 → "$150,000.00"
+      expect(find.text(r'$150,000.00'), findsOneWidget);
     });
 
     testWidgets('displays duration in minutes via i18n string', (tester) async {
@@ -62,14 +62,14 @@ void main() {
       expect(find.text('60 min'), findsOneWidget);
     });
 
-    testWidgets('formats price with dot separator for thousands', (
+    testWidgets('formats price with comma separator for thousands', (
       tester,
     ) async {
       final package = WellnessPackage(
         id: 'pkg-002',
         name: 'Premium Package',
         description: 'Premium experience.',
-        price: 1500000, // 1.500.000
+        price: 1500000, // $1,500,000.00
         durationMinutes: 120,
         createdAt: DateTime(2026),
         updatedAt: DateTime(2026),
@@ -77,7 +77,7 @@ void main() {
 
       await tester.pumpWidget(_wrap(WellnessPackageCard(package: package)));
 
-      expect(find.text('Rp 1.500.000'), findsOneWidget);
+      expect(find.text(r'$1,500,000.00'), findsOneWidget);
     });
   });
 }
