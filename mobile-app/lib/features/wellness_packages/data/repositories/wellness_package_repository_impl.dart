@@ -21,17 +21,13 @@ class WellnessPackageRepositoryImpl implements WellnessPackageRepository {
       final model = await _remoteDataSource.getPackages(params);
       return Right(model);
     } on DioException catch (e) {
-      final statusCode = e.response?.statusCode;
-      if (statusCode == 401) {
-        return const Left(UnauthorizedFailure());
+      final err = e.error;
+      if (err is UnauthorizedException) {
+        return Left(UnauthorizedFailure(err.message));
       }
-      return Left(ServerFailure.withCode(statusCode ?? 0));
-    } on UnauthorizedException catch (e) {
-      return Left(UnauthorizedFailure(e.message));
-    } on NetworkException catch (e) {
-      return Left(NetworkFailure(e.message));
-    } on ServerException catch (e) {
-      return Left(ServerFailure(e.message));
+      if (err is NetworkException) return Left(NetworkFailure(err.message));
+      if (err is ServerException) return Left(ServerFailure(err.message));
+      return const Left(ServerFailure());
     }
   }
 }

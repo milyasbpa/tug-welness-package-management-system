@@ -63,10 +63,14 @@ void main() {
     });
 
     test(
-      'returns Left(ServerFailure) when datasource throws ServerException',
+      'returns Left(ServerFailure) when DioException wraps ServerException',
       () async {
-        const exception = ServerException(message: 'Internal server error');
-        when(() => mockDataSource.getPackages(any())).thenThrow(exception);
+        final requestOptions = RequestOptions(path: '/api/mobile/packages');
+        final dioException = DioException(
+          requestOptions: requestOptions,
+          error: const ServerException(message: 'Internal server error'),
+        );
+        when(() => mockDataSource.getPackages(any())).thenThrow(dioException);
 
         final result = await sut.getPackages(_tParams);
 
@@ -80,47 +84,36 @@ void main() {
     );
 
     test(
-      'returns Left(NetworkFailure) when datasource throws NetworkException',
+      'returns Left(NetworkFailure) when DioException wraps NetworkException',
       () async {
-        const exception = NetworkException();
-        when(() => mockDataSource.getPackages(any())).thenThrow(exception);
+        final requestOptions = RequestOptions(path: '/api/mobile/packages');
+        final dioException = DioException(
+          requestOptions: requestOptions,
+          error: const NetworkException(
+            'No internet connection or request timed out.',
+          ),
+        );
+        when(() => mockDataSource.getPackages(any())).thenThrow(dioException);
 
         final result = await sut.getPackages(_tParams);
 
         expect(
           result,
           const Left<Failure, PaginatedPackages>(
-            NetworkFailure('No internet connection.'),
+            NetworkFailure('No internet connection or request timed out.'),
           ),
         );
       },
     );
 
     test(
-        'returns Left(UnauthorizedFailure) when datasource throws '
-        'UnauthorizedException', () async {
-      const exception = UnauthorizedException('Token expired.');
-      when(() => mockDataSource.getPackages(any())).thenThrow(exception);
-
-      final result = await sut.getPackages(_tParams);
-
-      expect(
-        result,
-        const Left<Failure, PaginatedPackages>(
-          UnauthorizedFailure('Token expired.'),
-        ),
-      );
-    });
-
-    test(
-      'returns Left(UnauthorizedFailure) when DioException has status 401',
+      'returns Left(UnauthorizedFailure) when DioException wraps UnauthorizedException',
       () async {
         final requestOptions = RequestOptions(path: '/api/mobile/packages');
         final dioException = DioException(
           requestOptions: requestOptions,
-          response: Response<void>(
-            statusCode: 401,
-            requestOptions: requestOptions,
+          error: const UnauthorizedException(
+            'Session expired. Please log in again.',
           ),
         );
         when(() => mockDataSource.getPackages(any())).thenThrow(dioException);
@@ -129,29 +122,25 @@ void main() {
 
         expect(
           result,
-          const Left<Failure, PaginatedPackages>(UnauthorizedFailure()),
+          const Left<Failure, PaginatedPackages>(
+            UnauthorizedFailure('Session expired. Please log in again.'),
+          ),
         );
       },
     );
 
     test(
-      'returns Left(ServerFailure) when DioException has non-401 status code',
+      'returns Left(ServerFailure) when DioException has no typed error',
       () async {
         final requestOptions = RequestOptions(path: '/api/mobile/packages');
-        final dioException = DioException(
-          requestOptions: requestOptions,
-          response: Response<void>(
-            statusCode: 500,
-            requestOptions: requestOptions,
-          ),
-        );
+        final dioException = DioException(requestOptions: requestOptions);
         when(() => mockDataSource.getPackages(any())).thenThrow(dioException);
 
         final result = await sut.getPackages(_tParams);
 
         expect(
           result,
-          const Left<Failure, PaginatedPackages>(ServerFailure.withCode(500)),
+          const Left<Failure, PaginatedPackages>(ServerFailure()),
         );
       },
     );
