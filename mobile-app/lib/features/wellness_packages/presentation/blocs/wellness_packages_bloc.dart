@@ -22,11 +22,16 @@ class WellnessPackagesBloc
     Emitter<WellnessPackagesState> emit,
   ) async {
     emit(const WellnessPackagesLoading());
-    final result = await _getPackages(GetPackagesParams(search: event.search));
+    final params = GetPackagesParams(search: event.search);
+    final result = await _getPackages(params);
     result.fold(
       (failure) => emit(WellnessPackagesError(message: failure.message)),
       (data) => emit(
-        WellnessPackagesLoaded(packages: data.packages, paginatedData: data),
+        WellnessPackagesLoaded(
+          packages: data.packages,
+          paginatedData: data,
+          activeParams: params,
+        ),
       ),
     );
   }
@@ -42,13 +47,21 @@ class WellnessPackagesBloc
     emit(current.copyWith(isLoadingMore: true));
 
     final nextPage = current.paginatedData.page + 1;
-    final result = await _getPackages(GetPackagesParams(page: nextPage));
+    final params = GetPackagesParams(
+      page: nextPage,
+      search: current.activeParams.search,
+      limit: current.activeParams.limit,
+      sortBy: current.activeParams.sortBy,
+      sortOrder: current.activeParams.sortOrder,
+    );
+    final result = await _getPackages(params);
     result.fold(
       (failure) => emit(WellnessPackagesError(message: failure.message)),
       (data) => emit(
         WellnessPackagesLoaded(
           packages: [...current.packages, ...data.packages],
           paginatedData: data,
+          activeParams: params,
         ),
       ),
     );

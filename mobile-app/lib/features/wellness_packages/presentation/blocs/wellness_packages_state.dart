@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:flutter_starter_kit/features/wellness_packages/domain/entities/get_packages_params.dart';
 import 'package:flutter_starter_kit/features/wellness_packages/domain/entities/paginated_packages.dart';
 import 'package:flutter_starter_kit/features/wellness_packages/domain/entities/wellness_package.dart';
 
@@ -25,27 +26,32 @@ final class WellnessPackagesLoaded extends WellnessPackagesState {
   const WellnessPackagesLoaded({
     required this.packages,
     required this.paginatedData,
+    required this.activeParams,
     this.isLoadingMore = false,
   });
 
   final List<WellnessPackage> packages;
   final PaginatedPackages paginatedData;
+  final GetPackagesParams activeParams;
   final bool isLoadingMore;
 
   WellnessPackagesLoaded copyWith({
     List<WellnessPackage>? packages,
     PaginatedPackages? paginatedData,
+    GetPackagesParams? activeParams,
     bool? isLoadingMore,
   }) {
     return WellnessPackagesLoaded(
       packages: packages ?? this.packages,
       paginatedData: paginatedData ?? this.paginatedData,
+      activeParams: activeParams ?? this.activeParams,
       isLoadingMore: isLoadingMore ?? this.isLoadingMore,
     );
   }
 
   @override
-  List<Object?> get props => [packages, paginatedData, isLoadingMore];
+  List<Object?> get props =>
+      [packages, paginatedData, activeParams, isLoadingMore];
 }
 
 /// A load operation failed with a user-facing [message].

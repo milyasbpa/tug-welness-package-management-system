@@ -95,6 +95,7 @@ void main() {
         WellnessPackagesLoaded(
           packages: _tSinglePage.packages,
           paginatedData: _tSinglePage,
+          activeParams: const GetPackagesParams(),
         ),
       ],
     );
@@ -181,17 +182,20 @@ void main() {
         WellnessPackagesLoaded(
           packages: _tPage1.packages,
           paginatedData: _tPage1,
+          activeParams: const GetPackagesParams(),
         ),
         // Load more in progress
         WellnessPackagesLoaded(
           packages: _tPage1.packages,
           paginatedData: _tPage1,
+          activeParams: const GetPackagesParams(),
           isLoadingMore: true,
         ),
         // Load more complete — packages accumulated
         WellnessPackagesLoaded(
           packages: [..._tPage1.packages, ..._tPage2.packages],
           paginatedData: _tPage2,
+          activeParams: const GetPackagesParams(page: 2),
         ),
       ],
     );
@@ -212,6 +216,7 @@ void main() {
       seed: () => WellnessPackagesLoaded(
         packages: _tSinglePage.packages,
         paginatedData: _tSinglePage, // page 1 of 1 → hasNextPage = false
+        activeParams: const GetPackagesParams(),
       ),
       act: (bloc) => bloc.add(const WellnessPackagesLoadMoreRequested()),
       expect: () => <WellnessPackagesState>[],
@@ -237,10 +242,12 @@ void main() {
         WellnessPackagesLoaded(
           packages: _tPage1.packages,
           paginatedData: _tPage1,
+          activeParams: const GetPackagesParams(),
         ),
         WellnessPackagesLoaded(
           packages: _tPage1.packages,
           paginatedData: _tPage1,
+          activeParams: const GetPackagesParams(),
           isLoadingMore: true,
         ),
         const WellnessPackagesError(message: 'Network error occurred.'),
