@@ -68,7 +68,7 @@ class _LoginPageState extends State<LoginPage> {
         return Scaffold(
           appBar: AppBar(title: Text(context.t.common.appName)),
           body: SafeArea(
-            child: Padding(
+            child: SingleChildScrollView(
               padding: const EdgeInsets.all(AppSpacing.lg),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
